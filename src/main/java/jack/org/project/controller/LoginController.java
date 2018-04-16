@@ -1,6 +1,8 @@
 package jack.org.project.controller;
 
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,5 +60,20 @@ public class LoginController {
 		else {
 			return "redirect:/customer/homepage";
 		}
+	}
+	
+	@RequestMapping(value = "/homepage", method = RequestMethod.GET)
+	public String homepage(Model model, String error, Principal p) {
+		
+		User currentUser = userService.findByUsername(p.getName());
+		String loginpath = "";
+		
+		if(currentUser.isAdmin()) {
+			return "redirect:/admin/homepage";
+		}
+		else {
+		return "redirect:/customer/homepage";
+		}
+	
 	}
 }

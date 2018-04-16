@@ -13,6 +13,7 @@ public class User {
 	private Long id;
 	private boolean admin = false;
 	private String username;
+	private String email;
 	private String password;
 	private String passwordConfirm;
 	private String firstName;
@@ -22,26 +23,13 @@ public class User {
 	private Set<Role> roles;
 	
 	private List<Comment> comments;
-	private List<Book> books;
+	private List<Book> booksInCart;
+	private List<Book> booksPurchased;
+	private List<PurchaseHistory> purchaseHistory;
 	
 	public User() {
 		
 	}
-
-	public User(Long id, boolean admin, String username, String password, String passwordConfirm, String firstName,
-			String lastName, String address, String debitCard) {
-		super();
-		this.id = id;
-		this.admin = admin;
-		this.username = username;
-		this.password = password;
-		this.passwordConfirm = passwordConfirm;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.debitCard = debitCard;
-	}
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,6 +47,14 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -137,13 +133,32 @@ public class User {
 		this.comments = comments;
 	}
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-	public List<Book> getBooks() {
-		return books;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_cart", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+	public List<Book> getBooksInCart() {
+		return booksInCart;
 	}
 
-	public void setBooks(List<Book> books) {
-		this.books = books;
+	public void setBooksInCart(List<Book> booksInCart) {
+		this.booksInCart = booksInCart;
+	}
+	
+	@OneToMany(mappedBy = "purchasedBy", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	public List<Book> getBooksPurchased() {
+		return booksPurchased;
+	}
+
+	public void setBooksPurchased(List<Book> booksPurchased) {
+		this.booksPurchased = booksPurchased;
+	}
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	public List<PurchaseHistory> getPurchaseHistory() {
+		return purchaseHistory;
+	}
+
+	public void setPurchaseHistory(List<PurchaseHistory> purchaseHistory) {
+		this.purchaseHistory = purchaseHistory;
 	}
 
 }

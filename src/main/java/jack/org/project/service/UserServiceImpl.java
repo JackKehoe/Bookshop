@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 
+import jack.org.project.model.Book;
 import jack.org.project.model.Role;
 import jack.org.project.model.User;
 import jack.org.project.repository.RoleRepository;
@@ -18,6 +19,10 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private BookService bookService;
+	@Autowired
+	private PurchaseHistoryService purchaseHistoryService;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -66,6 +71,7 @@ public class UserServiceImpl implements UserService {
 			user.setAddress(userForm.getAddress());
 			user.setFirstName(userForm.getFirstName());
 			user.setLastName(userForm.getLastName());
+			user.setPurchaseHistory(user.getPurchaseHistory());
 			userRepository.save(user);
 		}
 
@@ -84,6 +90,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAllUser() {
 		return userRepository.findAll();
+	}
+	
+	@Override
+	public void checkout(User user) {
+		user.getBooksPurchased().addAll(user.getBooksInCart());
+		user.getBooksInCart().clear();
+		List<Book> books = user.getBooksPurchased();
+		
+		for(Book book : books) {
+			int stock=book.getStockLevel() - 1;
+			book.setStockLevel(stock);
+			bookService.save(book);
+	
+		}
 	}
 
 }

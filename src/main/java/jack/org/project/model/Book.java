@@ -18,22 +18,13 @@ public class Book {
 	
 	private List<Comment> comments;
 	private List<User> carts;
+	
+	private PurchaseHistory purchaseHistory;
 
 	public Book() {
 		
 	}
 	
-	public Book(Long id, String title, String author, String image, String genre, double price, int stockLevel) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.author = author;
-		this.image = image;
-		this.genre = genre;
-		this.price = price;
-		this.stockLevel = stockLevel;
-	}
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -119,6 +110,16 @@ public class Book {
 
 	public void setPurchasedBy(User purchasedBy) {
 		this.purchasedBy = purchasedBy;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="purchaseHistory_id")
+	public PurchaseHistory getPurchaseHistory() {
+		return purchaseHistory;
+	}
+
+	public void setPurchaseHistory(PurchaseHistory purchaseHistory) {
+		this.purchaseHistory = purchaseHistory;
 	}
 
 }

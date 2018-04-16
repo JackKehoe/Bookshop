@@ -9,10 +9,10 @@
 		<http auto-config="true">
 		<intercept-url pattern="/" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/" access="hasRole('ROLE_CUSTOMER')" />
-		<intercept-url pattern="/admin/home**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/customer/home**" access="hasRole('ROLE_CUSTOMER')" />
+		<intercept-url pattern="/admin/homepage**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/customer/homepage**" access="hasRole('ROLE_CUSTOMER')" />
 
-		<form-login login-page="/login" default-target-url="/customer/home"
+		<form-login login-page="/login" default-target-url="/homepage"
 			authentication-failure-url="/login?error" username-parameter="username"
 			password-parameter="password" />
 		<logout logout-success-url="/login?logout" />
